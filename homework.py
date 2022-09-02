@@ -92,9 +92,9 @@ def parse_status(homework):
         raise KeyError('Ключ status отсутствует в списке')
 
     verdict = ''
-    if ((homework_status is None) or (
-            homework_status == '')) or ((homework_status != 'approved') and
-                                        (homework_status != 'rejected')):
+    if ((homework_status is None) or (homework_status == '')) or (
+            (homework_status != 'approved') and (
+            homework_status != 'rejected')):
         logging.error(f'Статус работы некорректен: {homework_status}')
     if homework_status == 'rejected':
         verdict = 'Работа проверена: у ревьюера есть замечания.'
