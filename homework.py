@@ -25,14 +25,13 @@ HOMEWORK_STATUSES = {
     'rejected': 'Работа проверена: у ревьюера есть замечания.'
 }
 
-
 logging.basicConfig(
-        level=logging.DEBUG,
-        handlers=[logging.StreamHandler(stream=sys.stdout)])
+    level=logging.DEBUG,
+    handlers=[logging.StreamHandler(stream=sys.stdout)])
 
 
 def send_message(bot, message):
-    """Отправка сообщения в Telegram чат"""
+    """Отправка сообщения в Telegram чат."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
     except Exception as error:
@@ -41,7 +40,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(current_timestamp):
-    """Запрос к API-сервиса"""
+    """Запрос к API-сервиса."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     homework_statuses = requests.get(ENDPOINT, headers=HEADERS, params=params)
@@ -53,7 +52,7 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
-    """Проверка ответа API на корректность"""
+    """Проверка ответа API на корректность."""
     if not (isinstance(response, dict)):
         raise TypeError('Ответ сервера не является словарем!')
     homeworks = response.get('homeworks')
@@ -76,7 +75,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Извлечение информации о конкретной домашней работе"""
+    """Извлечение информации о конкретной домашней работе."""
     homework_name = homework['homework_name']
     if 'homework_name' not in homework:
         logging.error(f'Ключ homework_name отсутствует в ответе сервера')
@@ -107,7 +106,7 @@ def parse_status(homework):
 
 
 def check_tokens():
-    """Проверка наличия переменных окружения"""
+    """Проверка наличия переменных окружения."""
     if PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
         return True
     else:
