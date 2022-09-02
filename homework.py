@@ -78,18 +78,18 @@ def parse_status(homework):
     """Извлечение информации о конкретной домашней работе."""
     homework_name = homework['homework_name']
     if 'homework_name' not in homework:
-        logging.error(f'Ключ homework_name отсутствует в ответе сервера')
-        raise Exception(f'Ключ homework_name отсутствует в ответе сервера')
+        logging.error('Ключ homework_name отсутствует в ответе сервера')
+        raise Exception('Ключ homework_name отсутствует в ответе сервера')
 
     if 'status' not in homework:
-        logging.error(f'Ключ status отсутствует в ответе сервера')
-        raise KeyError(f'Ключ status отсутствует в ответе сервера')
+        logging.error('Ключ status отсутствует в ответе сервера')
+        raise KeyError('Ключ status отсутствует в ответе сервера')
 
     homework_status = homework.get('status')
 
     if homework.get('status') not in HOMEWORK_STATUSES:
-        logging.error(f'Ключ status отсутствует в списке')
-        raise KeyError(f'Ключ status отсутствует в списке')
+        logging.error('Ключ status отсутствует в списке')
+        raise KeyError('Ключ status отсутствует в списке')
 
     verdict = ''
     if ((homework_status is None) or (
