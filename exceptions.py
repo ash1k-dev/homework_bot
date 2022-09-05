@@ -12,3 +12,6 @@ class ExceptionListEmpty(Exception):
 
 class SendError(Exception):
     pass
+
+class ApiError(Exception):
+    pass
