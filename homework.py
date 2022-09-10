@@ -70,7 +70,7 @@ def check_response(response):
 def parse_status(homework):
     """Извлечение информации о конкретной домашней работе."""
     if 'homework_name' not in homework:
-        raise KeyError(f'Ключ "homework_name" отсутствует в ответе сервера')
+        raise KeyError('Ключ "homework_name" отсутствует в ответе сервера')
 
     if 'status' not in homework:
         raise KeyError('Ключ status отсутствует в ответе сервера')
