@@ -2,16 +2,21 @@ class EmptyResponseFromAPI(Exception):
     pass
 
 
-class ExceptionResponseError(Exception):
+class ResponseError(Exception):
     pass
 
 
-class ExceptionListEmpty(Exception):
+class ListEmpty(Exception):
     pass
 
 
 class SendError(Exception):
     pass
 
+
 class ApiError(Exception):
+    pass
+
+
+class VariablesError(Exception):
     pass

@@ -46,8 +46,7 @@ def get_api_answer(current_timestamp):
     homework_statuses = requests.get(ENDPOINT, headers=HEADERS, params=params)
     if homework_statuses.status_code != HTTPStatus.OK:
         raise exceptions.ApiError('Сбой запроса к API-сервиса')
-    else:
-        return homework_statuses.json()
+    return homework_statuses.json()
 
 
 def check_response(response):
@@ -57,13 +56,13 @@ def check_response(response):
     homeworks = response.get('homeworks')
 
     if homeworks is None:
-        raise exceptions.ExceptionResponseError('Ошибка ответа')
+        raise exceptions.ResponseError('Ошибка ответа')
 
     if not isinstance(homeworks, list):
         raise TypeError('Работа с сервера не является списком!')
 
     if not homeworks:
-        raise exceptions.ExceptionListEmpty('Список домашних работ пуст!')
+        raise exceptions.ListEmpty('Обновлений по работам пока что нет')
     return homeworks
 
 
@@ -98,15 +97,15 @@ def main():
     status = ''
     if not check_tokens():
         logging.critical('Отсутствуют обязательные переменные окружения')
-        return 0
+        raise exceptions.VariablesError('Отсутствуют переменные окружения')
     while True:
         try:
             response = get_api_answer(current_timestamp)
-            current_timestamp = response.get('current_date')
             homeworks = check_response(response)
             message = parse_status(homeworks)
             if message != status:
                 send_message(bot, message)
+                current_timestamp = response.get('current_date')
                 logging.info('Сообщение было отправлено')
                 status = message
             else:
