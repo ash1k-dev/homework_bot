@@ -35,14 +35,13 @@ def send_message(bot, message):
     """Отправка сообщения в Telegram чат."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
-    except Exception as error:
-        raise exceptions.SendError(f'Бот не отправил сообщение! - {error}')
+    except Exception:
+        raise exceptions.SendError('Бот не отправил сообщение!')
 
 
 def get_api_answer(current_timestamp):
     """Запрос к API-сервиса."""
-    timestamp = current_timestamp or int(time.time())
-    params = {'from_date': timestamp}
+    params = {'from_date': current_timestamp}
     homework_statuses = requests.get(ENDPOINT, headers=HEADERS, params=params)
     if homework_statuses.status_code != HTTPStatus.OK:
         raise exceptions.ApiError('Сбой запроса к API-сервиса')
@@ -105,7 +104,8 @@ def main():
             message = parse_status(homeworks)
             if message != status:
                 send_message(bot, message)
-                current_timestamp = response.get('current_date')
+                current_timestamp = response.get('current_date',
+                                                 current_timestamp)
                 logging.info('Сообщение было отправлено')
                 status = message
             else:
@@ -113,7 +113,10 @@ def main():
         except Exception as error:
             logging.error(f'Сбой в работе программы: {error}')
             message = f'Сбой в работе программы: {error}'
-            send_message(bot, message)
+            try:
+                send_message(bot, message)
+            except Exception as error:
+                logging.error(f'Сбой в работе программы: {error}')
         finally:
             time.sleep(RETRY_TIME)
 
